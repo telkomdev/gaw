@@ -34,6 +34,11 @@ func (f *Result[R]) Err() error {
 	return f.err
 }
 
+// IsErr will return true if err not nil
+func (r *Result[R]) IsErr() bool {
+	return r.err != nil
+}
+
 // setErr will new error to Result's error
 func (f *Result[R]) setErr(err error) {
 	f.err = err
