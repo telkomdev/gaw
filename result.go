@@ -1,10 +1,15 @@
 package gaw
 
+import (
+	"sync"
+)
+
 // Result represent things that eventually available
 type Result[R any] struct {
 	value R
 	err   error
 	await chan bool
+	mx    sync.Mutex
 }
 
 // NewResult the Result constructor
@@ -16,11 +21,15 @@ func NewResult[R any]() *Result[R] {
 
 // Get will return Result value
 func (f *Result[R]) Get() R {
+	f.mx.Lock()
+	defer func() { f.mx.Unlock() }()
 	return f.value
 }
 
 // setValue will new value to Result's value
 func (f *Result[R]) setValue(value R) {
+	f.mx.Lock()
+	defer func() { f.mx.Unlock() }()
 	f.value = value
 }
 

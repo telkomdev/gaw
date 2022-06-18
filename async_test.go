@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
-	// "sync"
+	"time"
 )
 
 func TestAsyncShouldReturnValue(t *testing.T) {
@@ -23,24 +23,24 @@ func TestAsyncShouldReturnValue(t *testing.T) {
 }
 
 func TestAsyncFireForget(t *testing.T) {
-	// mx := sync.RWMutex{}
-	_ = Async[string](context.Background(), func() (string, error) {
+	async := Async[string](context.Background(), func() (string, error) {
+		// simulate heavy work that takes 3 seconds to finish
+		time.Sleep(time.Second * 1)
+
 		return "hello 1", nil
 	})
 
-	// // the test cases
-	// expected := "hello 1"
+	// the test cases
+	expected := ""
 
-	// // emit the Await
-	// // <-async.Await()
+	// emit the Await
+	// <-async.Await()
 
-	// mx.RLock()
-	// val := async.Get()
+	val := async.Get()
 
-	// if val == expected {
-	// 	t.Error("error: async val should match want")
-	// }
-	// mx.RUnlock()
+	if val != expected {
+		t.Error("error: async val should return empty")
+	}
 }
 
 func TestAsyncShouldReturnError(t *testing.T) {
