@@ -23,7 +23,7 @@ func (d defaultHandler[R]) handle() *Result[R] {
 	return d.f()
 }
 
-// invokeFunction will invoke the param function 
+// invokeFunction will invoke the param function
 // and set the value of value and err
 func invokeFunction[R any](
 	value *R,
