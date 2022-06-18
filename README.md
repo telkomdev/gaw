@@ -1,4 +1,4 @@
-## Gaw (Go async await)
+## Gaw (Go Async Await)
 
 The absurd implementation of `Node's Async Await` with `Golang`
 
