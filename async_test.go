@@ -24,7 +24,7 @@ func TestAsyncShouldReturnValue(t *testing.T) {
 
 func TestAsyncFireForget(t *testing.T) {
 	async := Async[string](context.Background(), func() (string, error) {
-		// simulate heavy work that takes 3 seconds to finish
+		// simulate heavy work that takes 1 seconds to finish
 		time.Sleep(time.Second * 1)
 
 		return "hello 1", nil
