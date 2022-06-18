@@ -23,8 +23,27 @@ func (d defaultHandler[R]) handle() *Result[R] {
 	return d.f()
 }
 
+// invokeFunction will invoke the param function 
+// and set the value of value and err
+func invokeFunction[R any](
+	value *R,
+	err *error,
+	function Function[R],
+	mx sync.RWMutex,
+	done chan<- struct{}) {
+
+	defer func() { close(done) }()
+
+	mx.Lock()
+	*value, *err = function()
+	mx.Unlock()
+
+	done <- struct{}{}
+}
+
 // newHandler the default handler constructor
-func newHandler[R any](ctx context.Context, function Function[R]) handler[R] {
+func newHandler[R any](ctx context.Context,
+	function Function[R]) handler[R] {
 	return defaultHandler[R]{
 		f: func() *Result[R] {
 			r := NewResult[R]()
@@ -39,15 +58,7 @@ func newHandler[R any](ctx context.Context, function Function[R]) handler[R] {
 
 				defer func() { close(r.Await()) }()
 
-				go func() {
-					defer func() { close(done) }()
-
-					mx.Lock()
-					value, err = function()
-					mx.Unlock()
-
-					done <- struct{}{}
-				}()
+				go invokeFunction(&value, &err, function, mx, done)
 
 				select {
 				case <-ctx.Done():
