@@ -13,7 +13,7 @@ type Event struct {
 }
 
 func main() {
-	gaw.Async[Event](context.Background(), func() (Event, error) {
+	async := gaw.Async[Event](context.Background(), func() (Event, error) {
 		// simulate heavy work that takes 3 seconds to finish
 		time.Sleep(time.Second * 3)
 
@@ -23,4 +23,6 @@ func main() {
 	fmt.Println("do other work")
 
 	fmt.Println("work done, maybe...")
+
+	fmt.Println("result is empty, because the Await is emited: ", async.Get())
 }
