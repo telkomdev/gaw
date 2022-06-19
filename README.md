@@ -1,6 +1,6 @@
 ## Gaw (Go Async Await)
 
-The absurd implementation of `Node's Async Await` with `Golang`
+An absurd implementation of `Node's Async Await` with `Golang`
 
 ### Requirements
 - Go 1.18+ (because `gaw` uses generic features)
