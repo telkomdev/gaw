@@ -132,3 +132,22 @@ func TestAsyncShouldReturnError(t *testing.T) {
 		t.Error("error: async Err should return error")
 	}
 }
+
+func TestAsyncContextTimeout(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*800)
+	defer func() { cancel() }()
+
+	async := Async[string](ctx, func() (string, error) {
+		// simulate heavy work that takes 1 seconds to finish
+		time.Sleep(time.Second * 2)
+
+		return "", nil
+	})
+
+	async.Await()
+
+	err := async.Err()
+	if err == nil {
+		t.Errorf("error: async Err should return context error %v", err)
+	}
+}
