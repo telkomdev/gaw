@@ -50,7 +50,7 @@ func main() {
 	fmt.Println("do other work")
 
 	// call Await
-	<-async.Await()
+	async.Await()
 
 	fmt.Println("work done")
 
