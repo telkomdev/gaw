@@ -56,7 +56,7 @@ func handle[R any](ctx context.Context,
 		r.setErr(err)
 		mx.Unlock()
 
-		r.awaitDone <- true
+		r.awaitDone <- struct{}{}
 	}()
 
 	return r

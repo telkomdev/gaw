@@ -18,7 +18,7 @@ func TestResultIsDone(t *testing.T) {
 	f.setValue("hello world")
 
 	go func() {
-		f.awaitDone <- true
+		f.awaitDone <- struct{}{}
 		close(f.awaitDone)
 	}()
 

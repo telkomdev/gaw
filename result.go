@@ -27,14 +27,14 @@ func (rs Results[R]) Get() []R {
 type Result[R any] struct {
 	value     R
 	err       error
-	awaitDone chan bool
+	awaitDone chan struct{}
 	mx        sync.RWMutex
 }
 
 // NewResult the Result constructor
 func NewResult[R any]() *Result[R] {
 	return &Result[R]{
-		awaitDone: make(chan bool, 1),
+		awaitDone: make(chan struct{}, 1),
 	}
 }
 
