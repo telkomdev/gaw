@@ -6,6 +6,18 @@ import (
 
 // Async will invoke Function in async mode
 func Async[R any](ctx context.Context, function Function[R]) *Result[R] {
-	h := newHandler[R](ctx, function)
-	return h.handle()
+	return handle[R](ctx, function)
+}
+
+// AsyncAll will invoke multiple Function in async mode
+func AsyncAll[R any](ctx context.Context, functions ...Function[R]) Results[R] {
+
+	var (
+		results Results[R]
+	)
+
+	for _, function := range functions {
+		results = append(results, Async[R](ctx, function))
+	}
+	return results
 }

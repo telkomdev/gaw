@@ -4,6 +4,25 @@ import (
 	"sync"
 )
 
+// Results represent multiple things that eventually available
+type Results[R any] []*Result[R]
+
+// Await will determine wheter all Results is done or not done
+func (rs Results[R]) Await() {
+	for _, r := range rs {
+		<-r.Await()
+	}
+}
+
+// Get will return Results multiple value
+func (rs Results[R]) Get() []R {
+	var values []R
+	for _, r := range rs {
+		values = append(values, r.Get())
+	}
+	return values
+}
+
 // Result represent things that eventually available
 type Result[R any] struct {
 	value R
