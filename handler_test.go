@@ -42,7 +42,7 @@ func TestMultiHandlerHandleShouldReturnValue(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		<-tc.result.Await()
+		tc.result.Await()
 
 		val := tc.result.Get()
 		if val != tc.want {
@@ -77,7 +77,7 @@ func TestMultiHandlerHandleShouldReturnError(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		<-tc.result.Await()
+		tc.result.Await()
 
 		err := tc.result.Err()
 		if (err != nil) != tc.want {
@@ -100,7 +100,7 @@ func TestOneHandlerHandleShouldReturnValue(t *testing.T) {
 		want:   "hello 1",
 	}
 
-	<-tc.result.Await()
+	tc.result.Await()
 
 	val := tc.result.Get()
 	if val != tc.want {

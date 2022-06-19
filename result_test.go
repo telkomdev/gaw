@@ -15,13 +15,18 @@ func TestNewResult(t *testing.T) {
 
 func TestResultIsDone(t *testing.T) {
 	f := NewResult[string]()
+	f.setValue("hello world")
 
 	go func() {
-		f.Await() <- true
-		close(f.Await())
+		f.awaitDone <- true
+		close(f.awaitDone)
 	}()
 
-	if !<-f.Await() {
+	f.Await()
+
+	expected := "hello world"
+
+	if f.Get() != expected {
 		t.Error("error: Await should return true")
 	}
 

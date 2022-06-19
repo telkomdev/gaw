@@ -14,7 +14,7 @@ func TestAsyncShouldReturnValue(t *testing.T) {
 
 	// the test cases
 	expected := "hello 1"
-	<-async.Await()
+	async.Await()
 
 	val := async.Get()
 	if val != expected {
@@ -125,7 +125,7 @@ func TestAsyncShouldReturnError(t *testing.T) {
 		return "", errors.New("error: async")
 	})
 
-	<-async.Await()
+	async.Await()
 
 	err := async.Err()
 	if err == nil {

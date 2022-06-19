@@ -10,7 +10,7 @@ type Results[R any] []*Result[R]
 // Await will determine wheter all Results is done or not done
 func (rs Results[R]) Await() {
 	for _, r := range rs {
-		<-r.Await()
+		r.Await()
 	}
 }
 
@@ -25,16 +25,16 @@ func (rs Results[R]) Get() []R {
 
 // Result represent things that eventually available
 type Result[R any] struct {
-	value R
-	err   error
-	await chan bool
-	mx    sync.RWMutex
+	value     R
+	err       error
+	awaitDone chan bool
+	mx        sync.RWMutex
 }
 
 // NewResult the Result constructor
 func NewResult[R any]() *Result[R] {
 	return &Result[R]{
-		await: make(chan bool, 1),
+		awaitDone: make(chan bool, 1),
 	}
 }
 
@@ -53,8 +53,8 @@ func (f *Result[R]) setValue(value R) {
 }
 
 // Await will determine wheter Result is done or not done
-func (f *Result[R]) Await() chan bool {
-	return f.await
+func (f *Result[R]) Await() {
+	<-f.awaitDone
 }
 
 // Err will return error

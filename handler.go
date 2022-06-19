@@ -39,7 +39,7 @@ func handle[R any](ctx context.Context,
 			done  = make(chan struct{}, 1)
 		)
 
-		defer func() { close(r.Await()) }()
+		defer func() { close(r.awaitDone) }()
 
 		go invokeFunction(&value, &err, function, mx, done)
 
@@ -56,7 +56,7 @@ func handle[R any](ctx context.Context,
 		r.setErr(err)
 		mx.Unlock()
 
-		r.Await() <- true
+		r.awaitDone <- true
 	}()
 
 	return r
