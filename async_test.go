@@ -33,7 +33,7 @@ func TestAsyncFireForget(t *testing.T) {
 	// the test cases
 	expected := ""
 
-	// emit the Await
+	// omit the Await
 	// <-async.Await()
 
 	val := async.Get()

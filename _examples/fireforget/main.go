@@ -24,5 +24,5 @@ func main() {
 
 	fmt.Println("work done, maybe...")
 
-	fmt.Println("result is empty, because the Await is emited: ", async.Get())
+	fmt.Println("result is empty, because the Await is omited: ", async.Get())
 }
