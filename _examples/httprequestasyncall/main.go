@@ -57,7 +57,10 @@ func main() {
 		return resp, err
 	}
 
-	asyncAll := gaw.AsyncAll[*http.Response](context.Background(),
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*400)
+	defer func() { cancel() }()
+
+	asyncAll := gaw.AsyncAll[*http.Response](ctx,
 		[]gaw.Function[*http.Response]{f1, f2, f3}...)
 
 	// do other work while waiting async to finish
@@ -68,9 +71,14 @@ func main() {
 
 	fmt.Println("work done")
 
-	for _, resp := range asyncAll.Get() {
+	for _, r := range asyncAll {
 
-		fmt.Println(resp)
-		fmt.Println("----")
+		if r.IsErr() {
+			fmt.Println("err: ", r.Err())
+			fmt.Println("----")
+		} else {
+			fmt.Println(r.Get())
+			fmt.Println("----")
+		}
 	}
 }
