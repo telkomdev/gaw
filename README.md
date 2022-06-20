@@ -2,6 +2,12 @@
 
 Small library to mimic `Node's Async Await` with `Golang`
 
+[![gaw CI](https://github.com/telkomdev/gaw/actions/workflows/ci.yml/badge.svg)](https://github.com/telkomdev/gaw/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/telkomdev/gaw.svg)](https://pkg.go.dev/github.com/telkomdev/gaw)
+
+#
+
+
 ### Requirements
 - Go 1.18+ (because `gaw` uses generic features)
 
