@@ -60,8 +60,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*400)
 	defer func() { cancel() }()
 
-	asyncAll := gaw.AsyncAll[*http.Response](ctx,
-		[]gaw.Function[*http.Response]{f1, f2, f3}...)
+	asyncAll := gaw.AsyncAll[*http.Response](ctx, f1, f2, f3)
 
 	// do other work while waiting async to finish
 	fmt.Println("do other work")

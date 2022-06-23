@@ -130,8 +130,7 @@ func main() {
 		return resp, err
 	}
 
-	asyncAll := gaw.AsyncAll[*http.Response](context.Background(),
-		[]gaw.Function[*http.Response]{f1, f2, f3}...)
+	asyncAll := gaw.AsyncAll[*http.Response](ctx, f1, f2, f3)
 
 	// do other work while waiting async to finish
 	fmt.Println("do other work")
