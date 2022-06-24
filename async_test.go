@@ -99,6 +99,44 @@ func TestAsyncAllFireForget(t *testing.T) {
 	}
 }
 
+func TestAsyncAllTimeout(t *testing.T) {
+	f1 := func() (string, error) {
+		// simulate heavy work that takes 1 seconds to finish
+		time.Sleep(time.Second * 2)
+
+		return "", nil
+	}
+
+	f2 := func() (string, error) {
+		// simulate heavy work that takes 1 seconds to finish
+		time.Sleep(time.Second * 2)
+
+		return "", nil
+	}
+
+	f3 := func() (string, error) {
+		// simulate heavy work that takes 1 seconds to finish
+		time.Sleep(time.Second * 2)
+
+		return "", nil
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*800)
+	defer func() { cancel() }()
+
+	asyncAll := AsyncAll[string](ctx, []Function[string]{f1, f2, f3}...)
+
+	// await
+	asyncAll.Await()
+
+	for _, r := range asyncAll {
+		err := r.Err()
+		if err == nil {
+			t.Errorf("error: async all Err should return context error %v", err)
+		}
+	}
+}
+
 func TestAsyncFireForget(t *testing.T) {
 	async := Async[string](context.Background(), func() (string, error) {
 		// simulate heavy work that takes 1 seconds to finish
